@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35828.75 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WioLinkService", "WioLinkService\WioLinkService.csproj", "{BB00321F-64A7-239D-36BF-EE4E5D114FCA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WioLinkCLI", "WioLinkCLI\WioLinkCLI.csproj", "{C54032E0-710D-4FAD-A07A-0C033A3B75F4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BB00321F-64A7-239D-36BF-EE4E5D114FCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB00321F-64A7-239D-36BF-EE4E5D114FCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB00321F-64A7-239D-36BF-EE4E5D114FCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB00321F-64A7-239D-36BF-EE4E5D114FCA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C54032E0-710D-4FAD-A07A-0C033A3B75F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C54032E0-710D-4FAD-A07A-0C033A3B75F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C54032E0-710D-4FAD-A07A-0C033A3B75F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C54032E0-710D-4FAD-A07A-0C033A3B75F4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8BE27DA5-BEF1-44B1-8415-81AF74F6BECF}
+	EndGlobalSection
+EndGlobal
