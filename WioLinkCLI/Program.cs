@@ -1,6 +1,7 @@
 ﻿using CommandLine;
 using CommandLine.Text;
 using SeeedKK.WioLink;
+using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -31,6 +32,9 @@ class Program
 
     private static async Task<int> RunProvisioning(ProvOptions opts)
     {
+        var addresses = await Dns.GetHostAddressesAsync(opts.Server!);
+        var serverIp = addresses.First();
+
         var service = new WioLinkService($"https://{opts.Server}");
 
         // ログイン
@@ -60,7 +64,14 @@ class Program
                 if (version < 1.2) Console.WriteLine("WARNING: ファームウェアがドメイン名前解決に対応していません。更新を強く推奨します。");
 
                 Console.Write("ノードを設定中... ");
-                await ConfigureNode(newNode.node_sn!, newNode.node_key!, opts.WifiSsid!, opts.WifiPassword!, opts.Server!);
+                if (version < 1.2)
+                {
+                    await ConfigureNode(newNode.node_sn!, newNode.node_key!, opts.WifiSsid!, opts.WifiPassword!, serverIp);
+                }
+                else
+                {
+                    await ConfigureNode(newNode.node_sn!, newNode.node_key!, opts.WifiSsid!, opts.WifiPassword!, opts.Server!);
+                }
                 Console.WriteLine("成功。");
                 break;
             }
@@ -134,6 +145,33 @@ class Program
         udpClient.Close();
 
         return version;
+    }
+
+    private static async Task ConfigureNode(string nodeSn, string nodeKey, string wifiSsid, string wifiPassword, IPAddress serverIp)
+    {
+        using UdpClient udpClient = new UdpClient(NODE_PORT);
+        using var cts = new CancellationTokenSource();
+        cts.CancelAfter(4000);
+        var token = cts.Token;
+
+        var waitForOk = Task.Run(async () =>
+        {
+            while (true)
+            {
+                var result = await udpClient.ReceiveAsync(token);
+                string message = Encoding.UTF8.GetString(result.Buffer);
+
+                if (result.RemoteEndPoint.ToString() == $"{NODE_IP}:{NODE_PORT}" && message == "ok\r\n") return;
+            }
+        }, token);
+        await Task.Delay(1000);
+
+        byte[] sendBytes = Encoding.ASCII.GetBytes($"APCFG: {wifiSsid}\t{wifiPassword}\t{nodeKey}\t{nodeSn}\t{serverIp.ToString()}\t{serverIp.ToString()}\t");
+        udpClient.Send(sendBytes, sendBytes.Length, NODE_IP, NODE_PORT);
+
+        await waitForOk;
+
+        udpClient.Close();
     }
 
     private static async Task ConfigureNode(string nodeSn, string nodeKey, string wifiSsid, string wifiPassword, string server)
