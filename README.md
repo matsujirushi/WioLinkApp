@@ -16,6 +16,10 @@
 
 ### オプション
 
+* -n, --name (必須)
+
+  デバイスの名前です。
+
 * -s, --server (必須)
 
   接続するWioサーバーです。
@@ -39,5 +43,5 @@
 ### コマンド例
 
 ```
-wio prov -s wiolink.seeed.co.jp -u user@domain -p password -S ssid -P password
+wio prov -n node1 -s wiolink.seeed.co.jp -u user@domain -p password -S ssid -P password
 ```
