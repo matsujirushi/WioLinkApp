@@ -14,6 +14,9 @@ class Program
     [Verb("prov", false, HelpText = "デバイスをプロビジョニングします。")]
     class ProvOptions
     {
+        [Option('n', "name", Required = true, HelpText = "デバイスの名前です。")]
+        public string? Name { get; set; }
+
         [Option('s', "server", Required = true, HelpText = "接続するWioサーバーです。")]
         public string? Server { get; set; }
 
@@ -102,7 +105,7 @@ class Program
 
         // ノードの名前を変更
         Console.Write("ノードの名前を変更... ");
-        await service.RenameNodeAsync(newNode.node_sn!, "hahaha");
+        await service.RenameNodeAsync(newNode.node_sn!, opts.Name!);
         Console.WriteLine("成功。");
 
         return 0;
